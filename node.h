@@ -3,6 +3,19 @@
 
 using namespace std;
 
+class Node{
+ public:
+  Node(int n);
+  ~Node();
+  Node* getNext();
+  int getNum();
+  void setNext(Node* newnext);
+ private:
+  Node* next;
+  int number;
+};
+
+
 class TreeNode {
  public:
   TreeNode(char* t);

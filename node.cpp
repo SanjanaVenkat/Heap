@@ -2,6 +2,27 @@
 #include <cstring>
 #include "node.h"
 
+Node::Node(int n) {
+  next = NULL;
+  number = n;
+}
+
+Node::~Node() {
+  next = NULL;
+}
+
+void Node::setNext(Node* newnext) {
+  next = newnext;
+}
+
+Node* Node::getNext() {
+  return next;
+}
+
+int Node::getNum() {
+  return number;
+}
+
 TreeNode::TreeNode(char* t) {
   left = NULL;
   right = NULL;
