@@ -5,8 +5,8 @@ using namespace std;
 
 void printTree1(int numarray[], int numofnum);
 void insert(int numarray[], int numofnum);
-void siftup (int index, int heaparray[], int level);
-
+void siftup (int index, int heaparray[], int level, int numofnum);
+int getParentIndex(int index); 
 
 void printTree1(int numarray[], int numofnum) {
   if (/*numofnum <= 1&&*/ numofnum > 0) {
@@ -101,16 +101,21 @@ void insert (int numarray[], int heaparray[], int numofnum) {
 void insert (int numarray[], int heaparray[], int numofnum) {
   int level = 0;
   int index = 0;
-  for (int i = 0; i < numofnum; i++) {
+  int i = 0;
+  printTree1(numarray, numofnum);
+  while (i < numofnum) {
     if (level == 0) {
       heaparray[index] = numarray[i];
       index++;
+      i++;
       level++;
+      
     }
     else {
       heaparray[index] = numarray[i];
-      siftup(index, heaparray, level);
+      siftup(index, heaparray, level, numofnum);
       index++;
+      i++;
       if (index == 3 || index == 7 || index == 15 || index == 31 || index == 63) {
 	level++;
       }
@@ -120,55 +125,60 @@ void insert (int numarray[], int heaparray[], int numofnum) {
   printTree1(heaparray, numofnum);
 }
 
-void siftup (int index, int heaparray[], int level) {
-  int parent = -1;
-  int newindex = -1;
-  int newlevel = level;
-  bool done = false;
-  while (newlevel != 0 || done != true) {
-  if (newlevel == 1) {
-    if (heaparray[0] < heaparray[index]) { 
-      int s1 = heaparray[0];
+
+void siftup(int index, int heaparray[], int level, int numofnum) {
+  
+  int pindex = getParentIndex(index);
+  if (heaparray[pindex] < heaparray[index]) {
+    cout << "Pindex: " << pindex << endl;
+    cout << "Index: " << index << endl;
+    if (level == 1) {
+      cout << "Test case 1" << endl;
+       cout << heaparray[index] << " " << heaparray[pindex] << endl;
+      int s1 = heaparray[pindex];
       int l1 = heaparray[index];
-      heaparray[0] = l1;
+      cout << s1 << " " << l1 << endl;
       heaparray[index] = s1;
-      done = true;
+      heaparray[pindex] = l1;
+       cout << heaparray[index] << " " << heaparray[pindex] << endl;
+ 
     }
     else {
-      newlevel = 0;
-      done = true;
-    }
-  }
-  else if (index % 2 == 1 && newlevel != 1) {
-    if (parent < heaparray[index]) {
-      newindex = (index + 1) / 2;
-    parent = heaparray[newindex];
-      int s2 = parent;
+      cout << "Test case 2" << endl;
+       cout << heaparray[index] << " " << heaparray[pindex] << endl;
+       int s2 = heaparray[pindex];
       int l2 = heaparray[index];
-      heaparray[index] = s2;   
-      heaparray[newindex] = l2;
-    newlevel = newlevel - 1;
+      cout << s2 << " " << l2 << endl;
+      heaparray[index] = s2;
+      heaparray[pindex] = l2;
+       
+cout << heaparray[index] << " " << heaparray[pindex] << endl;     
+siftup(index, heaparray, level - 1 , numofnum);
+    }
+  } 
+    else if (heaparray[pindex] >= heaparray[index]) {
+	return;
       }
-    else {
-      done = true;
-    }
-    }
-  else if (index % 2 == 0 && newlevel != 1) {
-    if (parent < heaparray[index]) {
-    newindex = index / 2;
-    parent = heaparray[newindex];
-      int s3 = parent;
-       int l3 = heaparray[index];
-      heaparray[index] = s3;
-      heaparray[newindex] = l3;
-    newlevel = newlevel - 1;
-       }
-     else {
-       done = true;
-     }
+
+  
+
+}
+
+
+int getParentIndex(int index) {
+  int pindex;
+  if (index == 1 || index == 2) {
+    pindex == 0;
   }
+  else if (index % 2 == 1) {
+    pindex = (index - 1) / 2;
   }
+  else if (index % 2 == 1) {
+    pindex = index / 2;
   }
+  return pindex;
+}
+
 
 int main() {
   int numarray[100];
@@ -189,7 +199,7 @@ int main() {
     }
   }
   cout << "Done reading numbers" << endl;
-  printTree1(numarray, numofnum);
+  //printTree1(numarray, numofnum);
     insert(numarray, heaparray, numofnum);
   
   return 0;
