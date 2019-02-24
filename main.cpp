@@ -130,34 +130,29 @@ void siftup(int index, int heaparray[], int level, int numofnum) {
   
   int pindex = getParentIndex(index);
   if (heaparray[pindex] < heaparray[index]) {
-    cout << "Pindex: " << pindex << endl;
-    cout << "Index: " << index << endl;
     if (level == 1) {
-      cout << "Test case 1" << endl;
-       cout << heaparray[index] << " " << heaparray[pindex] << endl;
       int s1 = heaparray[pindex];
       int l1 = heaparray[index];
-      cout << s1 << " " << l1 << endl;
+
       heaparray[index] = s1;
       heaparray[pindex] = l1;
-       cout << heaparray[index] << " " << heaparray[pindex] << endl;
- 
+
+       return;
     }
     else {
-      cout << "Test case 2" << endl;
-       cout << heaparray[index] << " " << heaparray[pindex] << endl;
+
        int s2 = heaparray[pindex];
       int l2 = heaparray[index];
-      cout << s2 << " " << l2 << endl;
+
       heaparray[index] = s2;
       heaparray[pindex] = l2;
        
-cout << heaparray[index] << " " << heaparray[pindex] << endl;     
-siftup(index, heaparray, level - 1 , numofnum);
+siftup(pindex, heaparray, level - 1 , numofnum);
     }
   } 
     else if (heaparray[pindex] >= heaparray[index]) {
-	return;
+      
+      return;
       }
 
   
@@ -168,13 +163,13 @@ siftup(index, heaparray, level - 1 , numofnum);
 int getParentIndex(int index) {
   int pindex;
   if (index == 1 || index == 2) {
-    pindex == 0;
+    pindex = 0;
   }
   else if (index % 2 == 1) {
     pindex = (index - 1) / 2;
   }
-  else if (index % 2 == 1) {
-    pindex = index / 2;
+  else if (index % 2 == 0) {
+    pindex = (index-2) / 2;
   }
   return pindex;
 }
