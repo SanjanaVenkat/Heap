@@ -1,9 +1,12 @@
+//Sanjana Venkat
+//2.26.19
+//heap, creates tree with children always smaller than parent, prints numbers from tree greatest to least by extracting highest number from tree
 #include <iostream>
 #include <cstring>
 #include <fstream>
 
 using namespace std;
-
+//functions
 void printTree1(int numarray[], int numofnum);
 void insert(int numarray[], int numofnum);
 void siftup (int index, int heaparray[], int level, int numofnum);
@@ -13,16 +16,18 @@ void extract (int heaparray[], int numofnum);
 int getLeftChildIndex(int index);
 int getRightChildIndex(int index);
 
+//prints tree
 void printTree1(int numarray[], int numofnum) {
   int treelength = 0;
   
-
+  //row one
   if (/*numofnum <= 1&&*/ numofnum > 0) {
     for (int i = 0; i < 1; i++) {
       cout << numarray[i] << " ";
     }
     cout << endl;
   }
+  //row two
   if (numofnum < 3) {
     treelength = numofnum;
   }
@@ -36,6 +41,7 @@ void printTree1(int numarray[], int numofnum) {
     }
     cout << endl;
   }
+  //row three
 if (numofnum < 7) {
     treelength = numofnum;
   }
@@ -50,7 +56,7 @@ if (numofnum < 7) {
     }
     cout << endl;
   }
-
+  //row four
   if (numofnum < 15) {
     treelength = numofnum;
   }
@@ -64,7 +70,7 @@ if (numofnum < 7) {
     }
     cout << endl;
   }
-
+  //row five
   if (numofnum < 31) {
     treelength = numofnum;
   }
@@ -78,6 +84,8 @@ if (numofnum < 7) {
     }
     cout << endl;
   }
+
+  //row six
   if (numofnum < 63) {
     treelength = numofnum;
   }
@@ -91,7 +99,7 @@ if (numofnum < 7) {
     }
     cout << endl;
   }
-
+  //row seven
   if (numofnum < 100) {
     treelength = numofnum;
   }
@@ -109,12 +117,13 @@ if (numofnum < 7) {
 }
 
 
-
+//inserts numbers into tree where appropriate
 void insert (int numarray[], int heaparray[], int numofnum) {
   int level = 0;
   int index = 0;
   int i = 0;
-  printTree1(numarray, numofnum);
+  //  printTree1(numarray, numofnum);
+  //prints root of tree
   while (i < numofnum) {
     if (level == 0) {
       heaparray[index] = numarray[i];
@@ -123,26 +132,32 @@ void insert (int numarray[], int heaparray[], int numofnum) {
       level++;
       
     }
+    //adds numbers to the rest of the tree
     else {
       heaparray[index] = numarray[i];
+      //moves numbers
       siftup(index, heaparray, level, numofnum);
       index++;
       i++;
+      //moves down to next level as needed
       if (index == 3 || index == 7 || index == 15 || index == 31 || index == 63) {
 	level++;
       }
     }
   }
+  //prints tree
   cout << "Printing tree" << endl;
   printTree1(heaparray, numofnum);
 
 }
 
-
+//swaps number so that parent is always greater than children
 void siftup(int index, int heaparray[], int level, int numofnum) {
-  
+  //gets index of parent node based on child node added to bottom of tree
   int pindex = getParentIndex(index);
+  //if child is greater
   if (heaparray[pindex] < heaparray[index]) {
+    //if child is new root, swaps and returns
     if (level == 1) {
       int s1 = heaparray[pindex];
       int l1 = heaparray[index];
@@ -152,6 +167,7 @@ void siftup(int index, int heaparray[], int level, int numofnum) {
 
        return;
     }
+    //else swaps and continues to next level, recursive
     else {
 
        int s2 = heaparray[pindex];
@@ -171,27 +187,30 @@ siftup(pindex, heaparray, level - 1 , numofnum);
   
 
 }
-
+//removes highest number from tree and prints it
 void extract (int heaparray[], int numofnum) {
   int index = 0;
   int level = 0;
+  cout << "Numbers from highest to lowest, printed from tree: " << endl;
   while (index < numofnum) {
-    cout << "Root " << heaparray[0] << endl;
+    //prints root of tree (highest number)
+    cout << heaparray[0]  << " ";
     numofnum = numofnum - 1;
     heaparray[0] = heaparray[numofnum];
+    //makes root the highest number by swapping numbers
     siftdown(index, heaparray, level, numofnum);
     //    cout << "Tree" << endl;
     //printTree1(heaparray, numofnum);
     
   }
 }
-
+//moves highest number up, recursive to reorder tree
 void siftdown (int index, int heaparray[], int level, int numofnum) {
-
+  //gets children indexes of parent
   int lindex = getLeftChildIndex(index);
   int rindex = getRightChildIndex(index);
-
-  if (heaparray[rindex] > heaparray[lindex] && heaparray[rindex] > heaparray[index] && rindex < numofnum) {
+  //performs swap, right child 
+  if (heaparray[rindex] >= heaparray[lindex] && heaparray[rindex] >= heaparray[index] && rindex < numofnum) {
     int s1 = heaparray[index];
     int l1 = heaparray[rindex];
     heaparray[index] = l1;
@@ -205,8 +224,8 @@ void siftdown (int index, int heaparray[], int level, int numofnum) {
     siftdown (rindex, heaparray, level, numofnum);
   }
   }
-
-  else if (heaparray[lindex] > heaparray[rindex] && heaparray[lindex] > heaparray[index] && lindex < numofnum) {
+  //performs swap, left child
+  else if (heaparray[lindex] >= heaparray[rindex] && heaparray[lindex] >= heaparray[index] && lindex < numofnum) {
     int s2 = heaparray[index];
     int l2 = heaparray[lindex];
     heaparray[index] = l2;
@@ -225,101 +244,17 @@ void siftdown (int index, int heaparray[], int level, int numofnum) {
     return;
   }
 
-  
-
-
 }
 
 
-
-/*
-void siftdown(int index, int heaparray[], int level, int numofnum) {
-  while (numofnum > 0) {
-  cout << "Root " << heaparray[0] << endl;
-  numofnum = numofnum - 1;
-   heaparray[0] = heaparray[numofnum];
-   // printTree1(heaparray, numofnum);
-  
-  int lcindex = getLeftChildIndex(0);
-    int rcindex = getRightChildIndex(0);
-    bool done1 = true;
-    bool done2 = true;
-    int lcfirst = 0;
-    int rcfirst = 0;
-
-    if (lcindex <= numofnum) {
-      if (lcfirst != 1) {
-      if (heaparray[0] < heaparray[lcindex]) {
-	int s1 = heaparray[0];
-      int l1 = heaparray[lcindex];
-      heaparray[0] = l1;
-      heaparray[lcindex] = s1;
-      lcfirst = 1;
-      }
-      done1 = true;
-      while (done1 != false) {
-	int lc = getLeftChildIndex(lcindex);
-	if (lc <= numofnum) {
-	  if (heaparray[lcindex] < heaparray[lc]) {
-	    int s3 = heaparray[lcindex];
-	    int l3 = heaparray[lc];
-	      heaparray[lcindex] = l3;
-	      heaparray[lc] = s3;
-	      lcindex = lc;
-	      done1 = true;
-	  }
-	  done1 = false;
-	}
-	done1 = false;
-      }   
-      }
-      
-      }
-       
-
-    if (rcindex <= numofnum) {
-      if (rcfirst != 1) {
-      if (heaparray[0] < heaparray[rcindex]) {
-	int s2 = heaparray[0];
-	int l2 = heaparray[rcindex];
-	heaparray[0] = l2;
-	heaparray[rcindex] = s2;
-	rcfirst = 1;
-      }
-	done2 = true;
-      while (done2 != false) {
-        int rc = getRightChildIndex(rcindex);
-        if (rc <= numofnum) {
-          if (heaparray[rcindex] < heaparray[rc]) {
-            int s4 = heaparray[rcindex];
-            int l4 = heaparray[rc];
-              heaparray[rcindex] = l4;
-              heaparray[rc] = s4;
-              rcindex = rc;
-              done2 = true;
-          }
-          done2 = false;
-        }
-        done2 = false;
-      }
-       
-      }
-    }
-    
-  }  
-
-    printTree1(heaparray, numofnum);
-    
-
-}
-
-*/
-
+//gets parent index from index of child
 int getParentIndex(int index) {
   int pindex;
+  //level 1
   if (index == 1 || index == 2) {
     pindex = 0;
   }
+  //parents for other levels
   else if (index % 2 == 1) {
     pindex = (index - 1) / 2;
   }
@@ -329,6 +264,7 @@ int getParentIndex(int index) {
   return pindex;
 }
 
+//gets left child from parent index
 int getLeftChildIndex(int index) {
   int lcindex;
   if (index == 0) {
@@ -340,6 +276,7 @@ int getLeftChildIndex(int index) {
   return lcindex;
 }
 
+//gets right child from parent index
 int getRightChildIndex(int index) {
   int rcindex;
   if (index == 0) {
@@ -363,8 +300,12 @@ int main() {
   int response;
   char filename[1000];
   int r = 0;
+  //call for file or command line entry of numbers
+  cout << "You can enter numbers through the command line, or have a file that stores the numbers. You can have up to 100 numbers entered/stored. You will need to enter how many numbers you are going to be entering or have stored in the file." << endl;
+  cout << endl;
   cout << "Enter 1 for command line and 2 for file" << endl;
   cin >> r;
+  //command line
   if (r == 1) {
   cout << "Enter how many numbers you are entering" << endl;
   cin >> numofnum;
@@ -379,9 +320,10 @@ int main() {
   }
   cout << "Done reading numbers" << endl;
   }
+  //file entry
   else if (r==2) {
     ifstream inData;
-    cout << "Enter how many numbers you are entering" << endl;
+    cout << "Enter how many numbers are in the file" << endl;
   cin >> numofnum;
   cout << "Enter file name" << endl;
   cin >> filename;
@@ -391,7 +333,10 @@ int main() {
     i++;
   }
   }
+
+  //inserts numbers from either source
     insert(numarray, heaparray, numofnum);
+    //reverse print from search tree
     extract(heaparray, numofnum);
   return 0;
 }
